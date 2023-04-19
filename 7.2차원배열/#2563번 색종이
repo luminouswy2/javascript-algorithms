@@ -1,0 +1,87 @@
+# 백준 2563번 색종이(javascript)
+
+## 문제
+
+- 가로, 세로의 크기가 각각 100인 정사각형 모양의 흰색 도화지가 있다. 이 도화지 위에 가로, 세로의 크기가 각각 10인 정사각형 모양의 검은색 색종이를 색종이의 변과 도화지의 변이 평행하도록 붙인다. 이러한 방식으로 색종이를 한 장 또는 여러 장 붙인 후 색종이가 붙은 검은 영역의 넓이를 구하는 프로그램을 작성하시오.
+
+## 입력
+
+- 첫째 줄에 색종이의 수가 주어진다. 이어 둘째 줄부터 한 줄에 하나씩 색종이를 붙인 위치가 주어진다. 색종이를 붙인 위치는 두 개의 자연수로 주어지는데 첫 번째 자연수는 색종이의 왼쪽 변과 도화지의 왼쪽 변 사이의 거리이고, 두 번째 자연수는 색종이의 아래쪽 변과 도화지의 아래쪽 변 사이의 거리이다. 색종이의 수는 100 이하이며, 색종이가 도화지 밖으로 나가는 경우는 없다
+
+## 출력
+
+-첫째 줄에 색종이가 붙은 검은 영역의 넓이를 출력한다.
+
+## 예제 입력 1
+
+3
+3 7
+15 7
+5 2
+
+---
+
+## 예제 출력1
+
+## 260
+
+## 문제 풀이
+
+1.100X100 사이즈의 도화지(배열) 2. 10x10의 색종이가 n개가 있음 3. 색종이의 왼쪽(x)과 아래쪽(y) 좌표가 주어짐 4. 색종이의 가로x+10 세로 y+10 5. 도화지 배열에서 true인 요소의 개수를 세어 답을 구함
+
+---
+
+## 풀이
+
+```javascript
+const fs = require("fs");
+const file = process.platform === "linux" ? "dev/stdin" : "./text.txt";
+const input = fs.readFileSync(file).toString().trim().split("\n");
+
+const n = parseInt(input[0]);
+const data = [];
+
+for (i = 1; i <= n; i++) {
+  const str = input[i].trim().split(" ").map(Number);
+
+  data.push(str);
+}
+
+function solution(n, data) {
+  let paper = new Array(100).fill().map((el) => new Array(100).fill(false));
+
+  for (let i = 0; i < n; i++) {
+    const colorPaper = data[i];
+    const x = colorPaper[0],
+      y = colorPaper[1];
+
+    for (let j = 0; j < 10; j++) {
+      for (let m = 0; m < 10; m++) {
+        paper[x + j][y + m] = true;
+      }
+    }
+  }
+
+  const answer = paper.reduce((prev, curr) => {
+    for (const el of curr) {
+      if (el) {
+        prev++;
+      }
+    }
+    return prev;
+  }, 0);
+
+  console.log(answer);
+}
+
+solution(n, data);
+```
+
+---
+
+## 시행 착오
+
+1. 색종이의 색을 겹치게 하는방법 몰랐음 그래서 검색함.
+2. 반복문 중첩이 여러번 되서 그안에 반복 문자 j를 i로 써서 무한대로 돌음
+
+---
